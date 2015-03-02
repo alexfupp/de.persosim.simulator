@@ -6,7 +6,6 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: de.persosim.simulator.adapter.socket.Activator
 Bundle-Vendor: HJP Consulting
 Require-Bundle: de.persosim.simulator;bundle-version="0.5.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: de.persosim.simulator.adapter.socket
 Import-Package: org.osgi.framework,
