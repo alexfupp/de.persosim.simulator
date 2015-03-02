@@ -11,7 +11,7 @@ package de.persosim.simulator.crypto;
  * 
  */
 public class Crypto {
-	protected static String provider = "BC";
+	protected static String provider = "SC";
 
 	/*--------------------------------------------------------------------------------*/
 
