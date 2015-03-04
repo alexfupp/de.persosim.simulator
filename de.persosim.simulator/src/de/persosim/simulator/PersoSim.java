@@ -4,7 +4,7 @@ import java.security.Security;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
-import de.persosim.simulator.perso.EmptyPersonalization;
+import de.persosim.simulator.perso.DummyPersonalization;
 import de.persosim.simulator.perso.Personalization;
 import de.persosim.simulator.platform.Iso7816;
 import de.persosim.simulator.platform.PersoSimKernel;
@@ -51,7 +51,7 @@ public class PersoSim implements Simulator {
 	 * This constructor is used by the OSGi-service instantiation
 	 */
 	public PersoSim(){
-		currentPersonalization = new EmptyPersonalization();
+		currentPersonalization = new DummyPersonalization();
 		startSimulator();
 	}
 	
