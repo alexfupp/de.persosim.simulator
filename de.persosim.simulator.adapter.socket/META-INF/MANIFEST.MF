@@ -5,8 +5,8 @@ Bundle-SymbolicName: de.persosim.simulator.adapter.socket
 Bundle-Version: 0.0.1.qualifier
 Bundle-Activator: de.persosim.simulator.adapter.socket.Activator
 Bundle-Vendor: HJP Consulting
-Require-Bundle: de.persosim.simulator;bundle-version="0.5.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: de.persosim.simulator.adapter.socket
 Import-Package: org.osgi.framework,
- org.osgi.util.tracker;version="1.5.1"
+ org.osgi.util.tracker
+Require-Bundle: de.persosim.simulator
