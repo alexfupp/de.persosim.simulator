@@ -92,9 +92,7 @@ public abstract class DefaultPersonalization extends XmlPersonalization implemen
 	public void buildObjectTree() {
 		try {
 			mf = new MasterFile(new FileIdentifier(0x3F00),
-					new DedicatedFileIdentifier(new byte[] { (byte) 0xA0, 0x0,
-							0x0, 0x2, 0x47, 0x10, 0x03 }));
-
+					new DedicatedFileIdentifier(new byte[] { (byte) 0xF0, (byte) 0x4E, (byte) 0x66, (byte) 0xE7, (byte) 0x5C, (byte) 0x02, (byte) 0xD8 }));
 			addAuthObjects();
 
 			addDomainParameters();
