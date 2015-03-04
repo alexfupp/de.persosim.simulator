@@ -25,6 +25,5 @@ Bundle-ClassPath: .,
  lib/prov-1.51.0.0.jar
 Import-Package: org.osgi.framework
 Eclipse-BundleShape: dir
-Service-Component: OSGI-INF/SimulatorComponent.xml
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.persosim.simulator.Activator
