@@ -239,7 +239,16 @@ public abstract class DefaultPersonalization extends XmlPersonalization implemen
 	 * Add an EF.CardAccess below MF as described by TR03110
 	 */
 	protected void addEfCardAccess() {
-		// force auto generation by DefaultNpaUnmarshallerCallback
+		byte[] content = HexString
+				.toByteArray("3181C13012060A04007F0007020204020202010202010D300D060804007F00070202020201023012060A04007F00070202030202020102020129301C060904007F000702020302300C060704007F0007010202010D020129303E060804007F000702020831323012060A04007F0007020203020202010202012D301C060904007F000702020302300C060704007F0007010202010D02012D302A060804007F0007020206161E687474703A2F2F6273692E62756E642E64652F6369662F6E70612E786D6C");
+		
+		ElementaryFile efCardAccess = new ElementaryFile(new FileIdentifier(0x011C),
+				new ShortFileIdentifier(0x1C),
+				content,
+				Arrays.asList((SecCondition) new NullSecurityCondition()),
+				Collections.<SecCondition> emptySet(),
+				Collections.<SecCondition> emptySet());
+		mf.addChild(efCardAccess);
 	}
 
 	/**
