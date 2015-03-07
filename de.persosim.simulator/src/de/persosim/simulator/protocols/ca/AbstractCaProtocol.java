@@ -11,6 +11,7 @@ import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
@@ -31,6 +32,7 @@ import de.persosim.simulator.cardobjects.MasterFile;
 import de.persosim.simulator.cardobjects.MasterFileIdentifier;
 import de.persosim.simulator.cardobjects.OidIdentifier;
 import de.persosim.simulator.cardobjects.Scope;
+import de.persosim.simulator.crypto.Crypto;
 import de.persosim.simulator.crypto.CryptoSupport;
 import de.persosim.simulator.crypto.DomainParameterSet;
 import de.persosim.simulator.crypto.KeyDerivationFunction;
@@ -243,7 +245,7 @@ public abstract class AbstractCaProtocol extends AbstractProtocolStateMachine im
 		byte[] sharedSecret = null;
 		
 		try {
-			keyAgreement = KeyAgreement.getInstance(caOid.getKeyAgreementName());
+			keyAgreement = KeyAgreement.getInstance(caOid.getKeyAgreementName(), Crypto.getCryptoProvider());
 			keyAgreement.init(staticPrivateKeyPicc);
 			keyAgreement.doPhase(ephemeralPublicKeyPcd, true);
 			sharedSecret = keyAgreement.generateSecret();
@@ -253,7 +255,7 @@ public abstract class AbstractCaProtocol extends AbstractProtocolStateMachine im
 			logException(this, e);
 			/* there is nothing more to be done here */
 			return;
-		} catch(NoSuchAlgorithmException | IllegalStateException e) {
+		} catch(NoSuchAlgorithmException | NoSuchProviderException | IllegalStateException e) {
 			e.printStackTrace();
 			ResponseApdu resp = new ResponseApdu(Iso7816.SW_6FFF_IMPLEMENTATION_ERROR);
 			processingData.updateResponseAPDU(this, e.getMessage(), resp);

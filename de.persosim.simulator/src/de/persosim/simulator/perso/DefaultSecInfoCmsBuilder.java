@@ -1,11 +1,14 @@
 package de.persosim.simulator.perso;
 
 import static de.persosim.simulator.utils.PersoSimLogger.*;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import de.persosim.simulator.crypto.Crypto;
 import de.persosim.simulator.tlv.Asn1;
 import de.persosim.simulator.tlv.ConstructedTlvDataObject;
 import de.persosim.simulator.tlv.PrimitiveTlvDataObject;
@@ -207,14 +210,14 @@ public class DefaultSecInfoCmsBuilder implements TlvConstants, SecInfoCmsBuilder
 
 		//add messageDigest
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA224"); //XXX use digest alg from #getDigestAlgorithm()
+			MessageDigest md = MessageDigest.getInstance("SHA224", Crypto.getCryptoProvider()); //XXX use digest alg from #getDigestAlgorithm()
 			byte[] digest = md.digest(eContent.getTlvDataObject(new TlvPath(TAG_A0, TAG_OCTET_STRING)).getValueField());
 			ConstructedTlvDataObject messageDigest = new ConstructedTlvDataObject(TAG_SEQUENCE);
 			messageDigest.addTlvDataObject(new PrimitiveTlvDataObject(HexString.toByteArray("06 09 2A 86 48 86 F7 0D 01 09 04")));
 			ConstructedTlvDataObject attrValues = new ConstructedTlvDataObject(TAG_SET, new PrimitiveTlvDataObject(TAG_OCTET_STRING, digest));
 			messageDigest.addTlvDataObject(attrValues);
 			signedAttrs.addTlvDataObject(messageDigest);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (NoSuchAlgorithmException | NoSuchProviderException e) {
 			logException(getClass(), e);
 		}
 		

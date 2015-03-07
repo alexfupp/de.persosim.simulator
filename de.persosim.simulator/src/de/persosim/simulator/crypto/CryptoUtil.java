@@ -291,15 +291,16 @@ public class CryptoUtil {
 	 * @return a copy of the provided key pair which is updated to the new provided domain parameters
 	 * @throws NoSuchAlgorithmException 
 	 * @throws InvalidKeySpecException 
+	 * @throws NoSuchProviderException 
 	 */
-	public static KeyPair updateKeyPairToNewDomainParameters(KeyPair keyPair, DomainParameterSet domainParametersMapped) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static KeyPair updateKeyPairToNewDomainParameters(KeyPair keyPair, DomainParameterSet domainParametersMapped) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
 		// create key specs for ephemeral public key pair according to mapped domain parameters
 		KeySpec[] keySpecsPiccMapped = domainParametersMapped.updateKeySpec(keyPair);
 		KeySpec mappedPrivateKeySpec = keySpecsPiccMapped[0];
 		KeySpec mappedPublicKeySpec = keySpecsPiccMapped[1];
 		
 		// Actually create keys from key specs
-		KeyFactory keyFactory = KeyFactory.getInstance(domainParametersMapped.getKeyAgreementAlgorithm());
+		KeyFactory keyFactory = KeyFactory.getInstance(domainParametersMapped.getKeyAgreementAlgorithm(), Crypto.getCryptoProvider());
 		PrivateKey mappedPrivateKey = keyFactory.generatePrivate(mappedPrivateKeySpec);
 		PublicKey mappedPublicKey = keyFactory.generatePublic(mappedPublicKeySpec);
 		return new KeyPair(mappedPublicKey, mappedPrivateKey);

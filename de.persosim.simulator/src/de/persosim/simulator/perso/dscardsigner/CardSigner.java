@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Properties;
 
+import de.persosim.simulator.crypto.Crypto;
 import de.persosim.simulator.utils.HexString;
 
 
@@ -80,7 +81,7 @@ public class CardSigner {
     }
 	
 	private byte[] getDigest(String algorithm, byte[] data) throws NoSuchAlgorithmException, NoSuchProviderException {
-		MessageDigest mda = MessageDigest.getInstance(algorithm, "BC");
+		MessageDigest mda = MessageDigest.getInstance(algorithm, Crypto.getCryptoProvider());
 		return mda.digest(data);
 	}
 	

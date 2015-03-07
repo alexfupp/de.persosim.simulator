@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.ECPrivateKey;
@@ -23,7 +24,6 @@ import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
-
 
 import de.persosim.simulator.tlv.ConstructedTlvDataObject;
 import de.persosim.simulator.tlv.PrimitiveTlvDataObject;
@@ -284,12 +284,14 @@ public class DomainParameterSetEcdh implements DomainParameterSet, TlvConstants 
 		
 		PublicKey mappedPublicKey;
 		try {
-			KeyFactory keyFactory = KeyFactory.getInstance(getKeyAgreementAlgorithm());
+			KeyFactory keyFactory = KeyFactory.getInstance(getKeyAgreementAlgorithm(), Crypto.getCryptoProvider());
 			mappedPublicKey = keyFactory.generatePublic(reconstructedPublicKeySpec);
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalArgumentException("invalid key agreement algorithm");
 		} catch (InvalidKeySpecException e) {
 			throw new IllegalArgumentException("invalid public ECDH key");
+		} catch (NoSuchProviderException e) {
+			throw new IllegalArgumentException("CryptoProvider not correctly installed");
 		}
 		
 		return (ECPublicKey) mappedPublicKey;
@@ -309,12 +311,14 @@ public class DomainParameterSetEcdh implements DomainParameterSet, TlvConstants 
 		
 		PrivateKey privateKey;
 		try {
-			KeyFactory keyFactory = KeyFactory.getInstance(getKeyAgreementAlgorithm());
+			KeyFactory keyFactory = KeyFactory.getInstance(getKeyAgreementAlgorithm(), Crypto.getCryptoProvider());
 			privateKey = keyFactory.generatePrivate(reconstructedPrivateKeySpec);
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalArgumentException("invalid key agreement algorithm");
 		} catch (InvalidKeySpecException e) {
 			throw new IllegalArgumentException("invalid public ECDH key");
+		} catch (NoSuchProviderException e) {
+			throw new IllegalArgumentException("CryptoProvider not correctly installed");
 		}
 		
 		return (ECPrivateKey) privateKey;

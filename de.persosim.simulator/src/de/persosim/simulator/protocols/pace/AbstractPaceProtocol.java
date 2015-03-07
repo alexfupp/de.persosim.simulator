@@ -38,6 +38,7 @@ import de.persosim.simulator.cardobjects.PasswordAuthObjectWithRetryCounter;
 import de.persosim.simulator.cardobjects.Scope;
 import de.persosim.simulator.cardobjects.TrustPointCardObject;
 import de.persosim.simulator.cardobjects.TrustPointIdentifier;
+import de.persosim.simulator.crypto.Crypto;
 import de.persosim.simulator.crypto.CryptoSupport;
 import de.persosim.simulator.crypto.DomainParameterSet;
 import de.persosim.simulator.crypto.KeyDerivationFunction;
@@ -543,7 +544,7 @@ public abstract class AbstractPaceProtocol extends AbstractProtocolStateMachine 
 		log(this, "pcd  token raw data " + pcdTokenInput, DEBUG);
 		
 		try {
-			KeyAgreement keyAgreement = KeyAgreement.getInstance(paceOid.getKeyAgreementName());
+			KeyAgreement keyAgreement = KeyAgreement.getInstance(paceOid.getKeyAgreementName(), Crypto.getCryptoProvider());
 			keyAgreement.init(this.ephemeralKeyPairPicc.getPrivate());
 			keyAgreement.doPhase(this.ephemeralPublicKeyPcd, true);
 			
@@ -561,7 +562,7 @@ public abstract class AbstractPaceProtocol extends AbstractProtocolStateMachine 
 			
 			log(this, "final " + secretKeySpecENC.getAlgorithm() + " symmetric key material ENC is " + HexString.encode(secretKeySpecENC.getEncoded()), DEBUG);
 			log(this, "final " + secretKeySpecMAC.getAlgorithm() + " symmetric key material MAC is " + HexString.encode(secretKeySpecMAC.getEncoded()), DEBUG);
-		} catch (InvalidKeyException | IllegalStateException | NoSuchAlgorithmException e) {
+		} catch (InvalidKeyException | IllegalStateException | NoSuchAlgorithmException | NoSuchProviderException e) {
 			ResponseApdu resp = new ResponseApdu(Iso7816.SW_6A80_WRONG_DATA);
 			processingData.updateResponseAPDU(this, "Invalid symmetric key", resp);
 			logException(this, e);
